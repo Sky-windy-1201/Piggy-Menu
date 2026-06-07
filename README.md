@@ -21,7 +21,7 @@ npm install
 cp .env.example .env
 ```
 
-3. Set `VITE_APP_PASSCODE` in `.env`.
+3. Set `VITE_APP_PASSCODE` in `.env`, or let it default to `1201`.
 
 4. Run locally:
 
@@ -59,7 +59,7 @@ VITE_FIREBASE_DATABASE_URL=https://menu-c75d9-default-rtdb.asia-southeast1.fireb
 VITE_FIREBASE_STORAGE_BUCKET=
 VITE_FIREBASE_MESSAGING_SENDER_ID=
 VITE_FIREBASE_APP_ID=
-VITE_APP_PASSCODE=
+VITE_APP_PASSCODE=1201
 ```
 
 The passcode is only a simple frontend gate for MVP convenience. It is not strong security because frontend code can be inspected.

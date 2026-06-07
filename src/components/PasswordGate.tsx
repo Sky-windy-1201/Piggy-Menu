@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 
 const UNLOCK_KEY = "couple-menu-unlocked";
-const PASSCODE = import.meta.env.VITE_APP_PASSCODE?.trim() ?? "";
+const PASSCODE = import.meta.env.VITE_APP_PASSCODE?.trim() || "1201";
 
 interface PasswordGateProps {
   onUnlock: () => void;
@@ -22,11 +22,6 @@ export default function PasswordGate({ onUnlock }: PasswordGateProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
-
-    if (!PASSCODE) {
-      setError("The private password is not configured yet.");
-      return;
-    }
 
     if (passcode === PASSCODE) {
       localStorage.setItem(UNLOCK_KEY, "true");
