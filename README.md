@@ -92,7 +92,7 @@ For dish pictures:
 
 ## Telegram Notifications
 
-Without Blaze, the app can send Telegram messages directly from the browser by using these Vite env values:
+Without Blaze, the app sends Telegram messages directly from the browser by using these Vite env values:
 
 - `VITE_TELEGRAM_BOT_TOKEN`
 - `VITE_TELEGRAM_CHAT_ID`
@@ -100,6 +100,13 @@ Without Blaze, the app can send Telegram messages directly from the browser by u
 This is enabled for the private MVP so the order is sent to the Telegram bot chat after Yuhong taps `Send Order`.
 
 Important: Vite exposes every `VITE_` value in the built frontend. Anyone who can inspect the deployed app can see the Telegram bot token and use it to control the bot. This is acceptable only for a private MVP. Rotate the bot token later if the app becomes public or if the token is shared accidentally.
+
+For Cloudflare deployment, add these as build environment variables in the Cloudflare project settings, then redeploy:
+
+- `VITE_TELEGRAM_BOT_TOKEN`
+- `VITE_TELEGRAM_CHAT_ID`
+
+Do not commit the bot token to GitHub. If the deployed app saves the order but no Telegram message arrives, inspect the deployed JS bundle or Cloudflare build settings first; missing `VITE_TELEGRAM_BOT_TOKEN` and `VITE_TELEGRAM_CHAT_ID` means the browser cannot call Telegram.
 
 The app also keeps manual backup links. After Yuhong submits an order, she can tap `Share to Telegram` or `Share to WhatsApp` if the automatic client send does not arrive.
 

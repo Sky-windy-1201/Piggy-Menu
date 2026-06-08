@@ -16,16 +16,16 @@ export const sendTelegramOrder = async (
     throw new Error("Telegram bot token or chat ID is missing.");
   }
 
-  const body = new URLSearchParams({
+  const url = new URL(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`);
+  url.search = new URLSearchParams({
     chat_id: telegramChatId,
     text: buildOrderText(items, note, orderTime),
     disable_web_page_preview: "true",
-  });
+  }).toString();
 
-  await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
-    method: "POST",
+  await fetch(url.toString(), {
+    method: "GET",
     mode: "no-cors",
-    body,
     keepalive: true,
   });
 };
