@@ -64,20 +64,13 @@ VITE_APP_PASSCODE=1201
 
 The passcode is only a simple frontend gate for MVP convenience. It is not strong security because frontend code can be inspected.
 
-## Default Dishes
+## Starting Menu
 
-The app starts with placeholder dishes from `src/data/defaultDishes.ts`. They use bundled placeholder pictures from `public/images`. You can rename and edit them later.
+The app starts with no bundled testing dishes. Add real dishes from the Add page.
 
-Current starter dishes:
+Current menu sections:
 
-| Dish | Category | Image |
-| --- | --- | --- |
-| 云朵小炒肉 | 荤菜 | bundled placeholder |
-| 月亮青菜 | 素菜 | bundled placeholder |
-| 糖醋星星 | 糖醋 | bundled placeholder |
-| 红烧小方块 | 红烧 | bundled placeholder |
-| 太阳拌饭 | 主食 | bundled placeholder |
-| 桃桃气泡饮 | 饮料 | bundled placeholder |
+荤菜, 素菜, 糖醋, 红烧, 主食, 饮料, 甜品, 小吃.
 
 ## Add Dishes
 

@@ -7,6 +7,8 @@ export const dishCategories = [
   "红烧",
   "主食",
   "饮料",
+  "甜品",
+  "小吃",
 ] as const;
 
 export type DishCategory = (typeof dishCategories)[number];
