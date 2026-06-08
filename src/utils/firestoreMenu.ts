@@ -1,9 +1,12 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   onSnapshot,
   serverTimestamp,
   Timestamp,
+  updateDoc,
   type DocumentData,
   type FirestoreError,
   type QueryDocumentSnapshot,
@@ -154,4 +157,40 @@ export const addMenuItem = async (input: NewMenuItemInput, uid?: string): Promis
   const documentReference = await addDoc(menuCollection, menuItem);
 
   return documentReference.id;
+};
+
+export const updateMenuItemCategory = async (
+  dishId: string,
+  category: DishCategory,
+  uid?: string
+): Promise<void> => {
+  if (!hasFirebaseConfig) {
+    const nextItems = loadLocalMenuItems().map((dish) =>
+      dish.id === dishId ? { ...dish, category, updatedAt: null } : dish
+    );
+    saveLocalMenuItems(nextItems);
+    return;
+  }
+
+  if (!uid) {
+    throw new Error("Firebase is still connecting. Try again in a moment.");
+  }
+
+  await updateDoc(doc(db, "menuItems", dishId), {
+    category,
+    updatedAt: serverTimestamp(),
+  });
+};
+
+export const deleteMenuItem = async (dishId: string, uid?: string): Promise<void> => {
+  if (!hasFirebaseConfig) {
+    saveLocalMenuItems(loadLocalMenuItems().filter((dish) => dish.id !== dishId));
+    return;
+  }
+
+  if (!uid) {
+    throw new Error("Firebase is still connecting. Try again in a moment.");
+  }
+
+  await deleteDoc(doc(db, "menuItems", dishId));
 };

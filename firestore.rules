@@ -9,7 +9,7 @@ service cloud.firestore {
 
     match /menuItems/{dishId} {
       allow read, create, update: if request.auth != null;
-      allow delete: if false;
+      allow delete: if request.auth != null;
     }
   }
 }

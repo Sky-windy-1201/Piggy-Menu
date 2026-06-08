@@ -3,7 +3,7 @@ import DishCard from "../components/DishCard";
 import { defaultDishes } from "../data/defaultDishes";
 import { hasFirebaseConfig } from "../firebase";
 import { dishCategories, type Dish, type DishCategory } from "../types";
-import { subscribeToMenuItems } from "../utils/firestoreMenu";
+import { deleteMenuItem, subscribeToMenuItems, updateMenuItemCategory } from "../utils/firestoreMenu";
 
 interface MenuPageProps {
   uid: string | null;
@@ -14,8 +14,10 @@ export default function MenuPage({ uid, onAddToCart }: MenuPageProps) {
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<DishCategory>(dishCategories[0]);
   const [query, setQuery] = useState("");
+  const [managingDishId, setManagingDishId] = useState<string | null>(null);
 
   useEffect(() => {
     if (hasFirebaseConfig && !uid) {
@@ -70,6 +72,45 @@ export default function MenuPage({ uid, onAddToCart }: MenuPageProps) {
   const selectedCount =
     categoryCounts.find((category) => category.category === selectedCategory)?.count ?? 0;
 
+  const handleMoveDish = async (dish: Dish, category: DishCategory) => {
+    if (dish.category === category) {
+      return;
+    }
+
+    setError("");
+    setMessage("");
+    setManagingDishId(dish.id);
+
+    try {
+      await updateMenuItemCategory(dish.id, category, uid ?? undefined);
+      setMessage(`${dish.name} moved to ${category}.`);
+      setSelectedCategory(category);
+    } catch (moveError: unknown) {
+      setError(moveError instanceof Error ? moveError.message : "Could not move this dish.");
+    } finally {
+      setManagingDishId(null);
+    }
+  };
+
+  const handleDeleteDish = async (dish: Dish) => {
+    if (!window.confirm(`Delete ${dish.name}?`)) {
+      return;
+    }
+
+    setError("");
+    setMessage("");
+    setManagingDishId(dish.id);
+
+    try {
+      await deleteMenuItem(dish.id, uid ?? undefined);
+      setMessage(`${dish.name} deleted.`);
+    } catch (deleteError: unknown) {
+      setError(deleteError instanceof Error ? deleteError.message : "Could not delete this dish.");
+    } finally {
+      setManagingDishId(null);
+    }
+  };
+
   return (
     <section className="page-section" aria-labelledby="menu-title">
       <div className="page-heading">
@@ -78,6 +119,7 @@ export default function MenuPage({ uid, onAddToCart }: MenuPageProps) {
       </div>
 
       {error ? <div className="alert error">{error}</div> : null}
+      {message ? <div className="alert success">{message}</div> : null}
 
       {loading ? (
         <div className="loading-stack" aria-live="polite">
@@ -129,7 +171,14 @@ export default function MenuPage({ uid, onAddToCart }: MenuPageProps) {
             {selectedDishes.length > 0 ? (
               <div className="dish-list compact-dish-list">
                 {selectedDishes.map((dish) => (
-                  <DishCard key={dish.id} dish={dish} onAdd={onAddToCart} />
+                  <DishCard
+                    key={dish.id}
+                    dish={dish}
+                    onAdd={onAddToCart}
+                    onMove={handleMoveDish}
+                    onDelete={handleDeleteDish}
+                    isManaging={managingDishId === dish.id}
+                  />
                 ))}
               </div>
             ) : (

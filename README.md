@@ -150,7 +150,7 @@ firebase deploy
 
 ## Firestore Rules
 
-The included MVP rules allow authenticated Firebase users to read, create, and update orders and menu items:
+The included MVP rules allow authenticated Firebase users to read, create, and update orders and menu items. Menu items can also be deleted from the app:
 
 ```js
 rules_version = '2';
@@ -164,7 +164,7 @@ service cloud.firestore {
 
     match /menuItems/{dishId} {
       allow read, create, update: if request.auth != null;
-      allow delete: if false;
+      allow delete: if request.auth != null;
     }
   }
 }
@@ -202,5 +202,5 @@ service firebase.storage {
 
 - Move Telegram sending behind a backend function when Blaze is available.
 - Restrict Firebase access by allowed UID.
-- Add menu edit/delete controls.
+- Add fuller menu editing for names, descriptions, and photos.
 - Add image cropping or compression before upload.

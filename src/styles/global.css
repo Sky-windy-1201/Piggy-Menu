@@ -518,6 +518,56 @@ img {
   font-size: 0.82rem;
 }
 
+.dish-manage-row {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: end;
+}
+
+.dish-manage-row label {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.dish-manage-row span {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.dish-manage-row select {
+  min-width: 0;
+  min-height: 38px;
+  border: 1px solid rgba(122, 111, 104, 0.22);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 800;
+  padding: 7px 9px;
+}
+
+.danger-button {
+  min-height: 38px;
+  border: 0;
+  border-radius: 10px;
+  background: #fff0ed;
+  color: var(--danger);
+  font-size: 0.82rem;
+  font-weight: 900;
+  padding: 8px 12px;
+}
+
+.danger-button:disabled,
+.dish-manage-row select:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
 .dish-title-row,
 .order-header,
 .cart-total {
