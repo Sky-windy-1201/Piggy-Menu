@@ -5,7 +5,7 @@ Couple Menu is a private mobile-first PWA for Yuhong to pick dishes and send an 
 The app works in two modes:
 
 - Local mode: if Firebase Web App config values are blank, the app uses bundled default dishes and localStorage. No raw Firebase setup warning is shown in the app.
-- Firebase mode: once `.env` contains the full Firebase Web App config, menu items and orders use Firestore, and dish photo uploads use Firebase Storage.
+- Firebase mode: once `.env` contains the full Firebase Web App config, menu items and orders use Firestore. Dish photos are compressed in the browser and saved with the menu item.
 
 ## Setup
 
@@ -43,9 +43,9 @@ To turn on Firebase mode:
 2. Add a Firebase Web App.
 3. Fill in the Firebase Web App values in `.env`.
 4. Enable Firestore Database.
-5. Enable Firebase Storage.
-6. Enable Anonymous Authentication.
-7. Deploy `firestore.rules` and `storage.rules`.
+5. Enable Anonymous Authentication.
+6. Deploy `firestore.rules`.
+7. Optional: enable Firebase Storage and deploy `storage.rules` only if you later move dish photos out of Firestore.
 
 The provided Realtime Database URL is included as `VITE_FIREBASE_DATABASE_URL`, but the app still needs the Firebase Web App config values such as API key and app ID. The database URL alone cannot initialize the Firebase Web SDK.
 
@@ -87,8 +87,8 @@ For dish pictures:
 
 - Choose a picture from the phone photo gallery.
 - If no photo is uploaded, the app uses a bundled default picture.
-- In local mode, uploaded photos are stored as local data URLs.
-- In Firebase mode, uploaded photos go to Firebase Storage and Firestore stores the download URL.
+- Uploaded photos are compressed in the browser before saving.
+- The current app does not require a Firebase Storage bucket for dish photos.
 
 ## Telegram Notifications
 
