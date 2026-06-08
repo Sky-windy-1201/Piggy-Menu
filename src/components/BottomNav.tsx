@@ -9,7 +9,7 @@ interface BottomNavProps {
 const navItems: Array<{ page: Page; label: string }> = [
   { page: "menu", label: "Menu" },
   { page: "cart", label: "Cart" },
-  { page: "add-dish", label: "Add Dish" },
+  { page: "add-dish", label: "Add" },
 ];
 
 export default function BottomNav({ currentPage, cartCount, onChange }: BottomNavProps) {

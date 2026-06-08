@@ -142,13 +142,13 @@ export default function AddDishPage({ uid, authError }: AddDishPageProps) {
   return (
     <section className="page-section" aria-labelledby="add-dish-title">
       <div className="page-heading">
-        <span className="eyebrow">Menu database</span>
-        <h2 id="add-dish-title">Add a dish</h2>
+        <span className="eyebrow">Menu</span>
+        <h2 id="add-dish-title">Add something tasty</h2>
       </div>
 
       <form className="dish-form" onSubmit={handleSubmit}>
         <label className="field">
-          <span>Dish name</span>
+          <span>Name</span>
           <input value={name} onChange={(event) => setName(event.target.value)} />
         </label>
 
@@ -167,7 +167,7 @@ export default function AddDishPage({ uid, authError }: AddDishPageProps) {
         </label>
 
         <label className="field">
-          <span>Description</span>
+          <span>What is it like?</span>
           <textarea
             rows={3}
             value={description}
@@ -176,7 +176,7 @@ export default function AddDishPage({ uid, authError }: AddDishPageProps) {
         </label>
 
         <label className="field">
-          <span>Upload PNG picture</span>
+          <span>Dish photo</span>
           <input
             key={fileInputKey}
             type="file"
@@ -190,15 +190,15 @@ export default function AddDishPage({ uid, authError }: AddDishPageProps) {
             <img src={imagePreviewUrl} alt="Selected dish preview" />
             <div>
               <strong>{imageFile?.name}</strong>
-              <span>PNG selected for upload</span>
+              <span>Photo selected</span>
             </div>
           </div>
         ) : (
           <div className="upload-preview">
             <img src={image} alt="Selected default dish preview" />
             <div>
-              <strong>Default picture</strong>
-              <span>Used if no PNG is uploaded</span>
+              <strong>Cute default photo</strong>
+              <span>Used if you skip uploading a photo</span>
             </div>
           </div>
         )}
@@ -209,31 +209,16 @@ export default function AddDishPage({ uid, authError }: AddDishPageProps) {
             checked={isAvailable}
             onChange={(event) => setIsAvailable(event.target.checked)}
           />
-          <span>Available on menu</span>
+          <span>Show on menu</span>
         </label>
 
         {error ? <div className="alert error">{error}</div> : null}
         {success ? <div className="alert success">{success}</div> : null}
 
         <button type="submit" className="primary-button" disabled={submitting}>
-          {submitting ? "Saving..." : "Add Dish"}
+          {submitting ? "Saving..." : "Save dish"}
         </button>
       </form>
-
-      <section className="examples-panel" aria-labelledby="example-dishes-title">
-        <div>
-          <span className="eyebrow">Seed examples</span>
-          <h3 id="example-dishes-title">Quick-fill dishes</h3>
-        </div>
-        <div className="example-grid">
-          {exampleDishes.map((dish) => (
-            <button key={dish.name} type="button" onClick={() => fillExample(dish)}>
-              <img src={dish.image} alt="" />
-              <span>{dish.name}</span>
-            </button>
-          ))}
-        </div>
-      </section>
     </section>
   );
 }

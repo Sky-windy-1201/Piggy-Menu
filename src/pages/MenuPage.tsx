@@ -89,7 +89,7 @@ export default function MenuPage({ uid, onAddToCart }: MenuPageProps) {
       {!loading && dishes.length === 0 ? (
         <div className="empty-state">
           <h3>还没有菜品</h3>
-          <p>去 Add Dish 添加第一个菜。</p>
+          <p>去添加一个菜吧。</p>
         </div>
       ) : null}
 
