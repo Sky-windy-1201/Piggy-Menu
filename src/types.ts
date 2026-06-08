@@ -17,7 +17,6 @@ export interface Dish {
   category: DishCategory;
   description: string;
   image: string;
-  tags: string[];
   isAvailable: boolean;
   createdAt: Timestamp | null;
   updatedAt: Timestamp | null;

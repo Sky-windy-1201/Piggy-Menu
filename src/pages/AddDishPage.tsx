@@ -15,7 +15,6 @@ interface ExampleDish {
   category: DishCategory;
   description: string;
   image: string;
-  tags: string;
 }
 
 const exampleDishes: ExampleDish[] = defaultDishes.map((dish) => ({
@@ -23,7 +22,6 @@ const exampleDishes: ExampleDish[] = defaultDishes.map((dish) => ({
   category: dish.category,
   description: dish.description,
   image: dish.image,
-  tags: dish.tags.join(", "),
 }));
 
 const getRandomDefaultImage = (): string =>
@@ -37,7 +35,6 @@ export default function AddDishPage({ uid, authError }: AddDishPageProps) {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const [fileInputKey, setFileInputKey] = useState(0);
-  const [tags, setTags] = useState("");
   const [isAvailable, setIsAvailable] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -62,7 +59,6 @@ export default function AddDishPage({ uid, authError }: AddDishPageProps) {
     setImage(getRandomDefaultImage());
     setImageFile(null);
     setFileInputKey((currentKey) => currentKey + 1);
-    setTags("");
     setIsAvailable(true);
   };
 
@@ -73,7 +69,6 @@ export default function AddDishPage({ uid, authError }: AddDishPageProps) {
     setImage(dish.image);
     setImageFile(null);
     setFileInputKey((currentKey) => currentKey + 1);
-    setTags(dish.tags);
     setIsAvailable(true);
     setError("");
     setSuccess("");
@@ -131,10 +126,6 @@ export default function AddDishPage({ uid, authError }: AddDishPageProps) {
           category,
           description,
           image: imageUrl,
-          tags: tags
-            .split(",")
-            .map((tag) => tag.trim())
-            .filter(Boolean),
           isAvailable,
         },
         uid ?? undefined
@@ -211,15 +202,6 @@ export default function AddDishPage({ uid, authError }: AddDishPageProps) {
             </div>
           </div>
         )}
-
-        <label className="field">
-          <span>Tags</span>
-          <input
-            value={tags}
-            onChange={(event) => setTags(event.target.value)}
-            placeholder="测试, 下饭, 清爽"
-          />
-        </label>
 
         <label className="toggle-field">
           <input

@@ -509,16 +509,6 @@ img {
   font-size: 0.7rem;
 }
 
-.dish-row .tag-row {
-  gap: 5px;
-}
-
-.dish-row .tag-row span {
-  min-height: 22px;
-  padding: 2px 8px;
-  font-size: 0.7rem;
-}
-
 .dish-row-add {
   grid-column: 2;
   justify-self: start;
@@ -555,8 +545,7 @@ img {
 }
 
 .category-pill,
-.status-pill,
-.tag-row span {
+.status-pill {
   display: inline-flex;
   align-items: center;
   min-height: 28px;
@@ -569,17 +558,6 @@ img {
 .category-pill {
   background: var(--gold-soft);
   color: #79511b;
-}
-
-.tag-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag-row span {
-  background: #f3f0ff;
-  color: #5a4d91;
 }
 
 .primary-button,

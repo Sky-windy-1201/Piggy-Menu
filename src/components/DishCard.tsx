@@ -34,13 +34,6 @@ export default function DishCard({ dish, onAdd }: DishCardProps) {
           </div>
         </div>
         <p>{dish.description}</p>
-        {dish.tags.length > 0 ? (
-          <div className="tag-row">
-            {dish.tags.map((tag) => (
-              <span key={tag}>{tag}</span>
-            ))}
-          </div>
-        ) : null}
       </div>
       <button type="button" className="primary-button add-button dish-row-add" onClick={handleAdd}>
         {added ? "已加" : "ADD +"}

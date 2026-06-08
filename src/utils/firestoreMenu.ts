@@ -18,7 +18,6 @@ export interface NewMenuItemInput {
   category: DishCategory;
   description: string;
   image: string;
-  tags: string[];
   isAvailable: boolean;
 }
 
@@ -29,9 +28,6 @@ const isDishCategory = (value: unknown): value is DishCategory =>
   typeof value === "string" && (dishCategories as readonly string[]).includes(value);
 
 const defaultCategory = dishCategories[0];
-
-const toStringArray = (value: unknown): string[] =>
-  Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
 
 const toTimestamp = (value: unknown): Timestamp | null =>
   value instanceof Timestamp ? value : null;
@@ -68,7 +64,6 @@ const loadLocalMenuItems = (): Dish[] => {
           ...dish,
           createdAt: null,
           updatedAt: null,
-          tags: toStringArray(dish.tags),
         }))
       : [];
   } catch {
@@ -92,7 +87,6 @@ const toDish = (snapshot: QueryDocumentSnapshot<DocumentData>): Dish => {
     category,
     description: typeof data.description === "string" ? data.description : "",
     image: typeof data.image === "string" ? data.image : "/images/tomato-egg-noodles.jpg",
-    tags: toStringArray(data.tags),
     isAvailable: typeof data.isAvailable === "boolean" ? data.isAvailable : true,
     createdAt: toTimestamp(data.createdAt),
     updatedAt: toTimestamp(data.updatedAt),
@@ -129,7 +123,6 @@ export const addMenuItem = async (input: NewMenuItemInput, uid?: string): Promis
       category: input.category,
       description: input.description.trim(),
       image: input.image.trim(),
-      tags: input.tags,
       isAvailable: input.isAvailable,
       createdAt: null,
       updatedAt: null,
@@ -152,7 +145,6 @@ export const addMenuItem = async (input: NewMenuItemInput, uid?: string): Promis
     category: input.category,
     description: input.description.trim(),
     image: input.image.trim(),
-    tags: input.tags,
     isAvailable: input.isAvailable,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),

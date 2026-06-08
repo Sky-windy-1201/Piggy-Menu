@@ -60,7 +60,7 @@ export default function MenuPage({ uid, onAddToCart }: MenuPageProps) {
     }
 
     return categoryDishes.filter((dish) =>
-      [dish.name, dish.description, dish.category, ...dish.tags]
+      [dish.name, dish.description, dish.category]
         .join(" ")
         .toLowerCase()
         .includes(normalizedQuery)
