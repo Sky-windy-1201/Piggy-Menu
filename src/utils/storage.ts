@@ -2,24 +2,43 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../firebase";
 
 const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
+const imageExtensions = ["jpg", "jpeg", "png", "webp", "gif", "heic", "heif"] as const;
 
 const cleanFileName = (fileName: string): string =>
   fileName
     .toLowerCase()
-    .replace(/\.png$/i, "")
+    .replace(/\.[a-z0-9]+$/i, "")
     .replace(/[^a-z0-9-]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 48) || "dish";
 
-export const validatePngFile = (file: File): string | null => {
-  const isPng = file.type === "image/png" || file.name.toLowerCase().endsWith(".png");
+const getImageExtension = (file: File): string => {
+  const extensionFromName = file.name.toLowerCase().match(/\.([a-z0-9]+)$/)?.[1];
+  if (
+    extensionFromName &&
+    imageExtensions.includes(extensionFromName as (typeof imageExtensions)[number])
+  ) {
+    return extensionFromName === "jpeg" ? "jpg" : extensionFromName;
+  }
 
-  if (!isPng) {
-    return "Please upload a PNG image.";
+  const extensionFromType = file.type.toLowerCase().replace("image/", "").split("+")[0];
+  return (
+    (extensionFromType === "jpeg" ? "jpg" : extensionFromType).replace(/[^a-z0-9]/g, "") || "jpg"
+  );
+};
+
+export const validateImageFile = (file: File): string | null => {
+  const extension = getImageExtension(file);
+  const isImage =
+    file.type.startsWith("image/") ||
+    imageExtensions.includes(extension as (typeof imageExtensions)[number]);
+
+  if (!isImage) {
+    return "Please choose a photo from your gallery.";
   }
 
   if (file.size > MAX_IMAGE_SIZE_BYTES) {
-    return "Please keep dish images under 5 MB.";
+    return "Please keep dish photos under 5 MB.";
   }
 
   return null;
@@ -30,15 +49,17 @@ export const uploadDishImage = async (file: File, uid: string): Promise<string> 
     throw new Error("Image upload needs Firebase Storage setup.");
   }
 
-  const validationError = validatePngFile(file);
+  const validationError = validateImageFile(file);
   if (validationError) {
     throw new Error(validationError);
   }
 
-  const filePath = `dish-images/${uid}/${Date.now()}-${cleanFileName(file.name)}.png`;
+  const contentType = file.type || `image/${getImageExtension(file)}`;
+  const extension = getImageExtension(file);
+  const filePath = `dish-images/${uid}/${Date.now()}-${cleanFileName(file.name)}.${extension}`;
   const imageReference = ref(storage, filePath);
   const snapshot = await uploadBytes(imageReference, file, {
-    contentType: "image/png",
+    contentType,
     customMetadata: {
       uploadedBy: uid,
     },

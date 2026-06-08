@@ -3,7 +3,7 @@ import { defaultDishImages, defaultDishes } from "../data/defaultDishes";
 import { hasFirebaseConfig } from "../firebase";
 import { dishCategories, type DishCategory } from "../types";
 import { addMenuItem } from "../utils/firestoreMenu";
-import { fileToDataUrl, uploadDishImage, validatePngFile } from "../utils/storage";
+import { fileToDataUrl, uploadDishImage, validateImageFile } from "../utils/storage";
 
 interface AddDishPageProps {
   uid: string | null;
@@ -83,7 +83,7 @@ export default function AddDishPage({ uid, authError }: AddDishPageProps) {
       return;
     }
 
-    const validationError = validatePngFile(file);
+    const validationError = validateImageFile(file);
     if (validationError) {
       setImageFile(null);
       setFileInputKey((currentKey) => currentKey + 1);
@@ -180,7 +180,7 @@ export default function AddDishPage({ uid, authError }: AddDishPageProps) {
           <input
             key={fileInputKey}
             type="file"
-            accept="image/png"
+            accept="image/*"
             onChange={handleImageFileChange}
           />
         </label>

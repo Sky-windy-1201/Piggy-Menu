@@ -5,7 +5,7 @@ Couple Menu is a private mobile-first PWA for Yuhong to pick dishes and send an 
 The app works in two modes:
 
 - Local mode: if Firebase Web App config values are blank, the app uses bundled default dishes and localStorage. No raw Firebase setup warning is shown in the app.
-- Firebase mode: once `.env` contains the full Firebase Web App config, menu items and orders use Firestore, and PNG dish uploads use Firebase Storage.
+- Firebase mode: once `.env` contains the full Firebase Web App config, menu items and orders use Firestore, and dish photo uploads use Firebase Storage.
 
 ## Setup
 
@@ -81,14 +81,14 @@ Current starter dishes:
 
 ## Add Dishes
 
-Open the app, unlock it, go to Add Dish, fill in the form, and save. Dish pictures are handled by PNG upload or the bundled default picture.
+Open the app, unlock it, go to Add, fill in the form, and save. Dish pictures are handled by phone photo upload or the bundled default picture.
 
 For dish pictures:
 
-- Upload a PNG file.
-- If no PNG is uploaded, the app uses a bundled default picture.
-- In local mode, uploaded PNGs are stored as local data URLs.
-- In Firebase mode, uploaded PNGs go to Firebase Storage and Firestore stores the download URL.
+- Choose a picture from the phone photo gallery.
+- If no photo is uploaded, the app uses a bundled default picture.
+- In local mode, uploaded photos are stored as local data URLs.
+- In Firebase mode, uploaded photos go to Firebase Storage and Firestore stores the download URL.
 
 ## Telegram Notifications
 
@@ -179,7 +179,7 @@ service cloud.firestore {
 
 ## Storage Rules
 
-The included Storage rules let authenticated users upload PNG dish images under their own UID folder:
+The included Storage rules let authenticated users upload dish images under their own UID folder:
 
 ```js
 rules_version = '2';
@@ -191,7 +191,7 @@ service firebase.storage {
       allow write: if request.auth != null
         && request.auth.uid == userId
         && request.resource.size < 5 * 1024 * 1024
-        && request.resource.contentType == "image/png";
+        && request.resource.contentType.matches("image/.*");
     }
   }
 }
@@ -202,7 +202,7 @@ service firebase.storage {
 - The passcode is frontend-only and not strong security.
 - Client-side Telegram sending exposes the bot token in the built app.
 - No push notifications yet.
-- PNG upload is capped at 5 MB.
+- Photo upload is capped at 5 MB.
 - Local mode data stays in the browser.
 
 ## Future Improvements
